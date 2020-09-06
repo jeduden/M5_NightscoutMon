@@ -1,3 +1,5 @@
+
+
 /*  M5Stack Nightscout monitor
     Copyright (C) 2018, 2019 Martin Lukasek <martin@lukasek.cz>
     
@@ -26,7 +28,7 @@
 */
 
 #include <Arduino.h>
-#include <M5Stack.h>
+#include <M5Core2.h>
 #include <Preferences.h>
 // #include <WiFi.h>
 #include <WiFiMulti.h>
@@ -258,7 +260,7 @@ void printLocalTime() {
 }
 
 void play_music_data(uint32_t data_length, uint8_t volume) {
-  uint8_t vol;
+  /*uint8_t vol;
   if( volume>100 )
     vol=1;
   else
@@ -270,14 +272,15 @@ void play_music_data(uint32_t data_length, uint8_t volume) {
     for(int i=0; i<data_length; i++) {
       dacWrite(SPEAKER_PIN, music_data[i]/vol);
       delayMicroseconds(194); // 200 = 1 000 000 microseconds / sample rate 5000
-    }
+    }*/
+    
     /* takes too long
     // slowly set DAC to zero from the last value
     for(int t=music_data[data_length-1]; t>=0; t--) {
       dacWrite(SPEAKER_PIN, t);
       delay(2);
     } */
-    for(int t = music_data[data_length - 1] / vol; t >= 0; t--) {
+    /*for(int t = music_data[data_length - 1] / vol; t >= 0; t--) {
       dacWrite(SPEAKER_PIN, t);
       delay(2);
     }
@@ -286,7 +289,7 @@ void play_music_data(uint32_t data_length, uint8_t volume) {
     ledcAttachPin(SPEAKER_PIN, TONE_PIN_CHANNEL);
     ledcWriteTone(TONE_PIN_CHANNEL, 0);
     CLEAR_PERI_REG_MASK(RTC_IO_PAD_DAC1_REG, RTC_IO_PDAC1_XPD_DAC | RTC_IO_PDAC1_DAC_XPD_FORCE);
-  }
+  }*/
 }
 
 void play_tone(uint16_t frequency, uint32_t duration, uint8_t volume) {
@@ -444,8 +447,8 @@ void buttons_test() {
       }
       if(timeToPwrOff<=0) {
         // play_tone(3000, 100, 1);
-        M5.Power.setWakeupButton(BUTTON_C_PIN);
-        M5.Power.powerOFF();
+        // M5.Power.setWakeupButton(BUTTON_C_PIN);
+        M5.Axp.SetSleep(); 
       }
       M5.update();
     }
