@@ -338,8 +338,16 @@ void drawIcon(int16_t x, int16_t y, const uint8_t *bitmap, uint16_t color) {
   }
 }
 
+uint8_t br = 0;
+
 void buttons_test() {
-  if(M5.BtnA.wasPressed()) {
+  //M5.Axp.ScreenBreath(br);
+  //br++;
+  //br%=12;
+  //M5.Lcd.setTextDatum(TL_DATUM);
+  //M5.Lcd.printf("Br:%d\n", (int) br);
+  
+  if(false && M5.BtnA.wasPressed()) {
     // M5.Lcd.printf("A");
     Serial.printf("A");
     // play_tone(1000, 10, 1);
@@ -1814,11 +1822,15 @@ void draw_page() {
 
 // the setup routine runs once when M5Stack starts up
 void setup() {
+    Serial.begin(9600);
+    while (! Serial);
     // initialize the M5Stack object
     M5.begin();
     // prevent button A "ghost" random presses
     Wire.begin();
     SD.begin();
+
+    setCpuFrequencyMhz(80);
     
     // M5.Speaker.mute();
 
@@ -1898,6 +1910,7 @@ void setup() {
     M5.Lcd.setRotation(cfg.display_rotation);
     lcdBrightness = cfg.brightness1;
     M5.Lcd.setBrightness(lcdBrightness);
+    //M5.Axp.ScreenBreath((lcdBrightness*16)/100);
     
     startupLogo();
     yield();
